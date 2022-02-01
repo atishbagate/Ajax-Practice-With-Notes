@@ -1,0 +1,108 @@
+ajex -> async js and XML 
+(interview Question: ajax is synchronous then how is ajax being asynchronous work.
+answer: https://dev.to/steelvoltage/if-javascript-is-single-threaded-how-is-it-asynchronous-56gd )
+helps to create to highly responsive web application. 
+
+html + css + JSON/XML/Text for storing data XML HTTP request Object for action in background and js put it together. 
+
+ex -> on typing search , rating etc. 
+no page reloading 
+upate part of page .
+send and recieve data. 
+
+//working of ajex.
+html/css/js ---->>>>js call ====== [XML HTTP Reqa and call back function] ----> server side ---> database.
+
+
+ Lesson -> XML HttpRequest.
+
+ (XHR) is an API that can used by js.
+ they used to tranfer to and manupulate data between client and server. 
+ XHR uses HTTP to set connection between client and server. 
+
+ XML HttpRequest Object -> this object is used to asynchronous communication between
+                                 client and server. 
+
+ follows as :->
+                send data from the client in the background. 
+                recieve data from server 
+                upate the webpage without reloading 
+
+                how to create XMLHttpRequest Object :-> 
+                    syntax ->  
+                        const variable = new XMLHttpRequest(); 
+                    ex ->  
+                        const xhr = new XMLHttpRequest(); 
+  
+Properties of HttpRequest Object:->   
+            onreadystatechange - 
+                                it defines the function to be called when the readystate Property changes. 
+                                 this Property called multiple times XMLHttpRequest.
+                                
+            readystate - 
+                        returns the state an XMLHttpRequest client is in.   
+                        
+                        types of states :==>
+                                                    0: --UNSENT---request not initialized------- the XMLHttpRequest client has been created, but the open() method hasnt been called yet.
+                                                    1:--OPENED--- server connection established ----- open() method has been invoked(). 
+                                                                                        during this state -> 1) the request headers can be set using the setRequestaHeader().
+                                                                                                             2) send() method can be called which will initiate the fetch.
+                                                    
+                                                    2:---HEADER_RECIEVED---- request received----------send() has been called and response headers have been  recieved.
+                                                    
+                                                    
+                                                    3:---LOADING----- processing request----- response Body is being recieved. if responseType is "text" or empty string.
+                                                                                            response text will have the partial text response as it loads.
+                                                    
+                                                    
+                                                    
+                                                    4:----DONE---- request finished and response is ready----  the fetch operation is complete. 
+                                                                                                        2 conditions -> 1> success  2> fail
+                                                            
+            responseType - it specify what type of data is in response. byDefault responseType-> text. 
+                            -> "" = empty String treated as text. 
+                            -> arraybuffer =  it contains binary data. 
+                            -> blob = contains binary data. 
+                            -> document = HTML/XML type of data. 
+                            -> JSON = json type of data. 
+                            -> text = text type of data.
+
+            responseText - recieve text from server.
+
+            responseXML - return Property contains XML/HTML document. 
+
+            Status - return code.
+                        200: "OK"
+                        403: "Forbidden"
+                        404: "Not Found"
+                        For a complete list go to the Http Messages Reference ->? https://www.w3schools.com/tags/ref_httpmessages.asp
+            
+            statusText	Returns the status-text (e.g. "OK" or "Not Found")
+    
+Properties of HttpRequest methods :->
+    open(method,url,async,user,psw) - used to initialized new created request or re initialized created.
+     method : the request type --> get post head etc. 
+     url : sending link. 
+     async : true or false ( means we are sending async req or sync req.)
+     user : user name to use for authentication. 
+     psw : password. 
+    
+    ex:-
+            xhr.open("GET","www.fb.com",true);
+
+    send() - method to send the req to server .
+    
+    send(body) - this method is used to send request and use POST request. 
+                and to send data in body.
+                ex: - xhr.send("fname:atish&lname:call");
+
+    setRequestaHeader(headers,value) -  used to add header-value pair to the header to send. 
+            ex - xhr.setRequestaHeader("Access-control-allow-origin","*")
+    
+    getResponseHeader(headerName) = used to specify header information from the server response.
+            ex - xhr.getResponseHeader("last-modified")
+    
+    getAllResponseHeaders() - return all header information.
+            ex - xhr.getAllResponseHeaders()
+    
+    abort() - this method used to cancel current request.

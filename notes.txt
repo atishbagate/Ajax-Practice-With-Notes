@@ -1,0 +1,169 @@
+notes from -> https://api.jquery.com/jQuery.ajax/
+jQuery library has full suit of Ajex capability.
+syntax: 
+    jQuery.ajex(url,settings)
+    or 
+    most commonly used method -> $.ajex(url,settings)
+        there is also another methods -> $.get(), $.getScript(), $.getJSON(), $.post(), $().load() 
+where, 
+    url -> url to where request have is to send 
+    settings -> key value pair that config the ajext request
+    data -> what type of data you want to send . byDefault - >  query String
+
+    method => post, get, put
+    timeout => timeout for request.
+    success -> function is called when req is success.
+            3 arguments are there  1) data return from the server.
+                                   2) String describe the Status.
+                                   3) jQueryXHR object.
+
+    dataType -> which type of data you expect from server. 
+                that is mentioned here 
+             type of data recieved -> xml, html, script, json, text,jsonp
+// example 
+    GET method:->
+    $.ajex({
+        url:test.php,
+        method: "GET",
+        success: function(data){
+            //process of response data
+        }
+    });
+    POST method:->
+    $.ajex({
+        url: test.php,
+        method: POST,
+        data:{name:Atish},
+        success:function(data){
+            //process here
+        }
+    });
+
+    ///
+$.ajax() -> It is the function underlies all Ajex request sent by jQuery.
+
+jqXHR Object -> it return as callBack value. responseText and responseXML properties and getResponseHeader().
+            jqXHR has following properties ->   
+                                                readystate,
+                                                responseXML, responseText,
+                                                status,
+                                                statusText,
+                                                abort([statusText]),
+                                                getAllResponseHeaders(),
+                                                getResponseHeader(name),
+                                                overrideMimeType(mimeType),
+                                                setRequestaHeader(name,value),
+                                                statusCode(callbacksByStatusCode)
+
+                                                note -> no onreadystatechange provided in jqXHR
+
+            callback hooks -> 
+                                this are the hooks used to work on callback of ajex.
+                            main 3 callback hooks :- $ajax().done -->   jqXHR.done(function( data, textStatus, jqXHR ) {});
+                                                                        An alternative construct to the success callback option,
+                                                                         refer to deferred.done() for implementation details.
+                                                       
+                                                     $ajax().fail --> jqXHR.fail(function( jqXHR, textStatus, errorThrown ) {});
+                                                                         An alternative construct to the error callback option, 
+                                                                         the .fail() method replaces the deprecated .error() method. 
+                                                                         Refer to deferred.fail() for implementation details.
+                                                    
+                                                     $ajax().always -->  jqXHR.always(function( data|jqXHR, textStatus, jqXHR|errorThrown ) { }); 
+                                                                         An alternative construct to the complete callback option, the .always() 
+                                                                         Method replaces the deprecated .complete() method.
+
+                                                     $ajax().then   --> jqXHR.then(function( data, textStatus, jqXHR ) {}, function( jqXHR, textStatus, errorThrown ) {});
+                                                                        Incorporates the functionality of the .done() and .fail() methods, allowing (as of jQuery 1.8)
+                                                                         the underlying Promise to be manipulated. 
+                                                                        Refer to deferred.then() for implementation details.
+
+                                
+                          other some hooks are :-
+                                            beforeSend - 
+                                            error -  
+                                            dataFilter - 
+                                            complete -  
+            dataTypes ->
+                        Text,html,xml,json.jsonp,script
+
+            sending data to server -> 
+                                    requst using  -> get http method,  post http method
+            
+            Advanced option -> 
+                                global = prevent sending .ajexsend() ajexerror() and many more default methods to trigger.
+                                sending username and password = use username and password options only.
+                                timeout = used to time bound the request
+                                cache = use to cache your response if available,
+                                for ex - if you made a request of same kind then it will use cache and not make a ajax request to server, 
+                                 default it is true. for all except script and jsonp.
+                                ifModified  = if something changes from last request then it show error.
+                                scriptCharset = to set charset 
+                                async = true/false . no use of parallel requests. wait for one request to done. 
+                                        it will make the request synchronous and will block execution of other code.(important)
+                                abort() = Halt the req before complete.
+                                complete = trigger a callback function to run when the request is complete. no matter whether it is failure or success.
+                                           for ex - this is used when we want to show loader or progress bar.
+                                error = callback function when error occure.
+                                data = which type of data you want to send to a server. it is object or json or just Query etc
+                                data type = which type of data you expect from server.
+                                success = it is a callBack function is to be run if the request is success.
+                                          the function recieved the response data converters to a js object 
+                                          if the data type was JSON, as well as text status and raw request object.
+                                timeout = we can put timeout.( if not recieve in time then it is failure)
+                                type = which type of request (post, get, etc)
+
+            advanced tech ->
+                            using converters -> 
+                                                ajex support custom data type and mapping of data
+                                                using "contents" option we can manipulate it. 
+
+                                      example to convert and send data type          
+                                                $.ajax({
+                                                    contents:{
+                                                        mycustomtype : /custumetype/
+                                                    },
+                                                    converters:{
+                                                        "mycustomtype json" : function(result){
+                                                            return result;
+                                                        }
+                                                    }
+                                                }) 
+                                        
+                                        example to change dataType  -->>> text to mycustomtype ---- mycustomtype to json
+                                                $ajax({
+                                                     contents:{
+                                                        mycustomtype : /custumetype/
+                                                    },
+                                                    converters:{
+                                                        "text mycustomtype" : true,
+                                                        "mycustomtype json" : function(res){  return res  }
+                                                    }
+                                                })
+
+                    examples:----
+                             sending data to server and getting response
+
+                                                            
+                                    $.ajax({
+                                    method: "POST",
+                                    url: "some.php",
+                                    data: { name: "John", location: "Boston" }
+                                    })
+                                    .done(function( msg ) {
+                                        alert( "Data Saved: " + msg );
+                                    });
+                            
+
+
+                            Retriving files from server and appening in html 
+
+                             $.ajax({
+                                    url: "test.html",
+                                    cache: false
+                                    })
+                                    .done(function( html ) {
+                                        $( "#results" ).append( html );
+                                    });
+
+
+
